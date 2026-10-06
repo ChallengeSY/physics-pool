@@ -382,6 +382,7 @@ sub newRack(GameType as byte = 0, NewGame as byte = -1)
 		end with
 	next
 	ShotClock = MaxShot*FrameRate
+	TopChosen = 0
 	InitialHits = 0
 	InitialQuota = 2
 	InitialCue = 0
@@ -841,7 +842,14 @@ sub playerFrameSm(XPos as short, PlayerNum as byte)
 			drawBox(XPos-5,0,XPos+258,59)
 		end if
 		PlrStr = str(PlayerNum)+"P"
-		gfxstring(PlrStr,XPos+114,8,4,4,2,rgb(255,255,255))
+		if UseRuleset = GAME_7BALL OR UseRuleset = GAME_1POCKET then
+			if TopChosen = PlayerNum then
+				PlrStr = "Top"
+			elseif TopChosen = 3 - PlayerNum then
+				PlrStr = "Btm"
+			end if
+		end if
+		gfxstring(PlrStr,XPos+128-len(PlrStr)*7,8,4,4,2,rgb(255,255,255))
 
 		for SID as byte = 15 to 1 step -1
 			if .Pocketed(SID) > 0 then
